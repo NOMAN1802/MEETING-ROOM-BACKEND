@@ -1,7 +1,9 @@
-import bcrypt from "bcrypt"
+import { JwtPayload } from "jsonwebtoken";
 
-
-export const isPasswordMatched = async(plainTextPassword:string,hashedPassword:string) : Promise<boolean> =>{
-    const matchedPassword = await bcrypt.compare(plainTextPassword,hashedPassword)
-    return matchedPassword
-}
+declare global {
+    namespace Express {
+      interface Request {
+        user: JwtPayload; 
+      }
+    }
+  }
