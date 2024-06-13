@@ -3,15 +3,18 @@ import catchAsync from "../utils/catchAsync"
 import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from "../config";
 import { User } from "../modules/user/user.model";
-import { USER_ROLE} from "../modules/user/user.constant";
-import { TUserRoles } from "../modules/Auth/auth.interface";
+import { TUserRole } from "../modules/user/user.interface";
+import AppError from "../errors/AppError";
+import httpStatus from "http-status";
 
-export const auth = (userRoles: [TUserRoles]) =>{
+
+export const authorized = (userRoles: TUserRole[]) =>{
+
     return catchAsync(async(req:Request,res:Response,next:NextFunction) =>{
         const token = req.headers?.authorization?.split("Bearer ")[1];
 
         if(!token){
-            throw new Error("You are not authorized!")
+            throw new AppError(httpStatus.UNAUTHORIZED,"You have no access to this route")
         }
 
         const verifiedToken = jwt.verify(token
@@ -26,15 +29,17 @@ export const auth = (userRoles: [TUserRoles]) =>{
          const user = await User.findOne({email});
 
         if(!user){
-            throw new Error("User not found!")
+            throw new AppError(httpStatus.NOT_FOUND,"User not found!")
         }
 
         if(userRoles && !userRoles.includes(role)){
-            throw new Error("You are not authorized!")
+            throw new AppError(
+                httpStatus.FORBIDDEN,
+                "You are not allowed to access these resource"
+              );
         }
 
-        req.user = verifiedToken;
 
-        next()
+        next();
     })
 }
