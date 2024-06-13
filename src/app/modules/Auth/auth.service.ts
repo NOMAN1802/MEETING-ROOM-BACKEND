@@ -1,12 +1,11 @@
 import httpStatus from "http-status";
 import config from "../../config";
-import createToken from "../../utils/tokenGenerate";
 import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
-import jwt, { JwtPayload } from "jsonwebtoken";
-import { isPasswordMatched } from "./auth.util";
 import AppError from "../../errors/AppError";
+import { isPasswordMatched } from "../../utils/matchPassword";
+import createToken from "./auth.util";
 
 
 const signup = async (payload: TUser) => {
@@ -25,26 +24,22 @@ const signup = async (payload: TUser) => {
 const login = async (payload: TLoginUser) => {
 
   // checking user existence using email 
-  const user = await User.findOne({ email: payload.email }).select("+password");
-  // console.log(!user)
-  if (!user) {
-    throw new AppError(httpStatus.NOT_FOUND,"User Not Found!");
+  const user = await User.findOne({email: payload.email}).select("+password");
+     
+
+  if(!user){
+      throw new AppError(httpStatus.NOT_FOUND,' This User not found')
+  };
+ //  checking if the password is correct
+
+   const passwordMatch = await isPasswordMatched(
+    payload?.password,
+    user?.password
+  );
+
+  if (!passwordMatch){
+    throw new AppError(httpStatus.NOT_FOUND,"Password not matched!");
   }
-
-  // // check password is matched or not
-  // const passwordMatch = await isPasswordMatched(
-  //   payload.password,
-  //   user.password
-  // );
-
-  // if (!passwordMatch) {
-  //   throw new AppError(httpStatus.BAD_REQUEST,"Password not matched!");
-  // }
-
-  // //  checking if the password is correct
-if(!await User.isPasswordMatch(payload?.password, user?.password)){
-  throw new AppError(httpStatus.FORBIDDEN,' Password do not match')
-}
   
     const accessToken = createToken(
       user,
@@ -56,13 +51,16 @@ if(!await User.isPasswordMatch(payload?.password, user?.password)){
       user,
       config.jwt_refresh_secret as string,
       config.jwt_refresh_expire_in as string
-    )
+    );
+
+    // Convert user document to JSON
+  const userWithoutPassword = user.toJSON();
   
     // Return the user data and token
     return {
       accessToken,
       refreshToken,
-      user
+      user :userWithoutPassword
     };
   
   };

@@ -1,18 +1,13 @@
-import { JwtPayload } from "jsonwebtoken";
-import bcryptjs from "bcrypt";
-
-export const isPasswordMatched = async(plainPassword:string,hashedPassword:string) : Promise<boolean> =>{
-  const matchedPassword = await bcryptjs.compare(plainPassword,hashedPassword)
-  return matchedPassword
+import jwt from 'jsonwebtoken';
+import { TUser } from '../user/user.interface';
+const createToken  =(payload:Partial<TUser> , secretKey: string, expiresIn: string)=> {
+  
+    const tokenObject  ={
+     
+        email: payload.email, 
+        role: payload.role
+    }    
+    return  jwt.sign(tokenObject, secretKey, {expiresIn});
 }
-declare global {
-    namespace Express {
-      interface Request {
-        user: JwtPayload; 
-      }
-    }
-  }
 
-
-
-
+export default createToken;

@@ -1,5 +1,5 @@
 import { Schema, model } from "mongoose";
-import { TUser } from "./user.interface";
+import { TUser, UserModel } from "./user.interface";
 import bcrypt from 'bcrypt'
 import config from "../../config";
 
@@ -8,51 +8,57 @@ import config from "../../config";
 const userSchema = new Schema<TUser>({
     name:{
         type:String,
-        required:[true,'Name is required']
+        required:true,
     },
     email:{
         type:String,
-        required:[true,'Email is Required'],
+        required:true,
         unique:true
     },
     password:{
         type:String,
-        required: [true,"Password is required"],
-        select: 0
+        required: true,
+        select: 0,
         
     },
     phone:{
         type:String,
-        required:[true,'Contact Number is required']
+        required: true,
     },
     role:{
         type: String,
         enum:['user','admin'],
-        required:[true,'User must have a role']
+        required:true,
 
     },
     address:{
         type: String,
-        required: [true,'Address is required']
+        required: true,
     }
 },
 {
     timestamps: true,
-}
-);
-
-userSchema.pre('save',async function(next){
+    toJSON: {
+      transform: (doc, ret) => {
+        delete ret.password;
+        return ret;
+      }
+    }
+  });
+// hashed password
+userSchema.pre('save', async function (next) {
     const user = this;
+    if (user.isModified('password')) {
+      user.password = await bcrypt.hash(user.password, Number(config.bcrypt_salt_rounds));
+    }
+    next();
+  });
+// hide password 
 
-    user.password = await bcrypt.hash(user.password,Number(config.bcrypt_salt_rounds))
-
-    next()
-});
-// hide password
 userSchema.post('save', function(doc,next){
     doc.password = ""
 
     next()
 })
   
-  export const User = model<TUser>("User", userSchema);
+export const User = model<TUser>('User', userSchema)

@@ -20,11 +20,7 @@ const userSignup = catchAsync(
 const userLogin = catchAsync(
     async( req, res)=>{
            const result = await authServices.login(req.body);
-  
-
-    const {accessToken,refreshToken,user} = result
-    
-
+           const {accessToken,refreshToken,user} = result;
     res.cookie("refreshToken",refreshToken,{
         httpOnly:true,
         secure: config.NODE_ENV === 'production'
