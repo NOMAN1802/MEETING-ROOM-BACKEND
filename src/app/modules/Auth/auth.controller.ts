@@ -20,22 +20,22 @@ const userSignup = catchAsync(
 const userLogin = catchAsync(
     async( req, res)=>{
            const result = await authServices.login(req.body);
-    console.log("result",result)
+  
 
     const {accessToken,refreshToken,user} = result
     
 
     res.cookie("refreshToken",refreshToken,{
         httpOnly:true,
-        secure: config.node_env === 'production'
+        secure: config.NODE_ENV === 'production'
     })
   
         sendResponse(res, {
           statusCode: httpStatus.OK,
           success: true,
           message: 'User logged in successfully',
-          token: result.token,
-          data: result.user,
+          token:accessToken,
+          data:user,
         });
     });
 

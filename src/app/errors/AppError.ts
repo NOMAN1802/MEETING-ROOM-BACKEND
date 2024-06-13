@@ -1,4 +1,4 @@
-class ApplicationError extends Error{
+class AppError extends Error{
 
     public statusCode: number;
 
@@ -16,4 +16,4 @@ class ApplicationError extends Error{
     }
 };
 
-export default ApplicationError;
+export default AppError;

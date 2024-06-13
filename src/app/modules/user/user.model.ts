@@ -2,7 +2,7 @@ import { Schema, model } from "mongoose";
 import { TUser } from "./user.interface";
 import bcrypt from 'bcrypt'
 import config from "../../config";
-import { UserModel } from "../Auth/auth.interface";
+
 
 
 const userSchema = new Schema<TUser>({
@@ -18,7 +18,7 @@ const userSchema = new Schema<TUser>({
     password:{
         type:String,
         required: [true,"Password is required"],
-        select: 0,
+        select: 0
         
     },
     phone:{
@@ -28,49 +28,31 @@ const userSchema = new Schema<TUser>({
     role:{
         type: String,
         enum:['user','admin'],
-        required:[true,'Role Number is required']
+        required:[true,'User must have a role']
 
     },
     address:{
-        type: String
+        type: String,
+        required: [true,'Address is required']
     }
 },
 {
     timestamps: true,
 }
-)
+);
 
-// password hashing before saving user
-userSchema.pre("save", async function (next) {
+userSchema.pre('save',async function(next){
     const user = this;
-    user.password = await bcrypt.hash(this.password, Number(config.bcrypt_salt_rounds));
-    next();
-  });
-  //   empty password value set after saving password
-  userSchema.post('save', function(doc, next){
-    doc.password =''
+
+    user.password = await bcrypt.hash(user.password,Number(config.bcrypt_salt_rounds))
+
     next()
-  });
+});
+// hide password
+userSchema.post('save', function(doc,next){
+    doc.password = ""
 
-  userSchema.statics.isUserExistsByEmail = async function(email: string) {
-    return await User.findOne({email}).select('+password')
-  };
-
-
-  userSchema.statics.isPasswordMatch = async function (plainTextPassword, hashedPassword) {
-    return  await bcrypt.compare(plainTextPassword, hashedPassword)
-  }
-
+    next()
+})
   
-  //compare password while user login
-  userSchema.statics.comparePassword = async function (
-    plainPassword,
-    hashedPassword
-  ) {
-    return await bcrypt.compare(plainPassword, hashedPassword);
-  };
-  userSchema.statics.isUserExists = async function (email) {
-    return await User.findOne({ email }).select("+password");
-  };
-  
-  export const User = model<TUser, UserModel>("User", userSchema);
+  export const User = model<TUser>("User", userSchema);

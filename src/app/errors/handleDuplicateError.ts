@@ -1,7 +1,6 @@
-import { TErrorSources, TGenericErrorResponse } from "../utils/error";
+import { TErrorSources, TGenericErrorResponse } from '../interface/error';
 
-
-const duplicateError = (err: any): TGenericErrorResponse => {
+const handleDuplicateError = (err: any): TGenericErrorResponse => {
   // Extract value within double quotes using regex
   const match = err.message.match(/"([^"]*)"/);
 
@@ -24,4 +23,4 @@ const duplicateError = (err: any): TGenericErrorResponse => {
   };
 };
 
-export default duplicateError;
+export default handleDuplicateError;

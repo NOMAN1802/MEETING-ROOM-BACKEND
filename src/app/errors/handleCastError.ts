@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
-import { TErrorSources, TGenericErrorResponse } from "../utils/error";
+import { TErrorSources, TGenericErrorResponse } from "../interface/error";
 
 
-
-const castError = (err: mongoose.Error.CastError) : TGenericErrorResponse =>{
+const handleCastError = (err: mongoose.Error.CastError) : TGenericErrorResponse =>{
 
     const errorSources : TErrorSources = [
         {
@@ -22,4 +21,4 @@ const castError = (err: mongoose.Error.CastError) : TGenericErrorResponse =>{
 };
 
 
-export default castError;
+export default handleCastError;

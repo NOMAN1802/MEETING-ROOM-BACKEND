@@ -1,11 +1,12 @@
 import httpStatus from "http-status";
 import config from "../../config";
-import ApplicationError from "../../errors/ApplicationError";
 import createToken from "../../utils/tokenGenerate";
 import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import jwt, { JwtPayload } from "jsonwebtoken";
+import { isPasswordMatched } from "./auth.util";
+import AppError from "../../errors/AppError";
 
 
 const signup = async (payload: TUser) => {
@@ -13,8 +14,8 @@ const signup = async (payload: TUser) => {
   // checking using email if the user is exists for signup
 
   const user = await User.findOne({ email: payload.email });
-  if (user) {
-    throw new ApplicationError(httpStatus.BAD_REQUEST,"User Already Exists!");
+  if (!user) {
+    throw new AppError(httpStatus.BAD_REQUEST,"User Already Exists!");
   }
 
   const result = await User.create(payload);
@@ -22,19 +23,28 @@ const signup = async (payload: TUser) => {
 };
 
 const login = async (payload: TLoginUser) => {
-  
-    // checking using email if the user exists for login
-    const user = await User.isUserExistsByEmail(payload?.email).select("+password");
-    if (!user) {
-      throw new ApplicationError(httpStatus.NOT_FOUND,"User Not Found!");
-    }
-  
-    // check if password is matched or not
-    const passwordMatch = await User.comparePassword(payload?.password, user.password);
-    if (!passwordMatch) {
-      throw new ApplicationError(httpStatus.BAD_REQUEST,"Password not matched!");
-    }
- 
+
+  // checking user existence using email 
+  const user = await User.findOne({ email: payload.email }).select("+password");
+  // console.log(!user)
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND,"User Not Found!");
+  }
+
+  // // check password is matched or not
+  // const passwordMatch = await isPasswordMatched(
+  //   payload.password,
+  //   user.password
+  // );
+
+  // if (!passwordMatch) {
+  //   throw new AppError(httpStatus.BAD_REQUEST,"Password not matched!");
+  // }
+
+  // //  checking if the password is correct
+if(!await User.isPasswordMatch(payload?.password, user?.password)){
+  throw new AppError(httpStatus.FORBIDDEN,' Password do not match')
+}
   
     const accessToken = createToken(
       user,
@@ -54,7 +64,7 @@ const login = async (payload: TLoginUser) => {
       refreshToken,
       user
     };
-    // return user;
+  
   };
 
  
