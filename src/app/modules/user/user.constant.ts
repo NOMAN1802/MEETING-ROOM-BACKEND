@@ -1,5 +1,7 @@
 export const USER_ROLE = {
     
-    ADMIN: "ADMIN",
-    USER: "USER",
+    user: 'user',
+    admin: 'admin'
   } as const;
+
+  export const userRoles = ['user', 'admin'];

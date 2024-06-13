@@ -4,30 +4,36 @@ import jwt, { JwtPayload } from 'jsonwebtoken'
 import config from "../config";
 import { User } from "../modules/user/user.model";
 import { USER_ROLE} from "../modules/user/user.constant";
+import { TUserRoles } from "../modules/Auth/auth.interface";
 
-export const auth = (...requiredRoles :(keyof typeof USER_ROLE)[]) =>{
+export const auth = (userRoles: [TUserRoles]) =>{
     return catchAsync(async(req:Request,res:Response,next:NextFunction) =>{
-        const token = req.headers.authorization;
+        const token = req.headers?.authorization?.split("Bearer ")[1];
 
         if(!token){
             throw new Error("You are not authorized!")
         }
 
-        const verifiedToken = jwt.verify(token as string , config.jwt_access_secret as string)
+        const verifiedToken = jwt.verify(token
+             , config.jwt_access_secret as string) as JwtPayload
+
         console.log(verifiedToken)
 
-        const {role,email} = verifiedToken as JwtPayload
+        const {role,email} = verifiedToken;
 
         // check user exist in database or not
 
-        const user = await User.findOne({email})
+         const user = await User.findOne({email});
+
         if(!user){
             throw new Error("User not found!")
         }
 
-        if(!requiredRoles.includes(role)){
+        if(userRoles && !userRoles.includes(role)){
             throw new Error("You are not authorized!")
         }
+
+        req.user = verifiedToken;
 
         next()
     })

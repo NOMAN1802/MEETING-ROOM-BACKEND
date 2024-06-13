@@ -1,10 +1,11 @@
 import config from "../../config";
 import sendResponse from "../../utils/sendResponse";
+import createToken from "../../utils/tokenGenetrate";
 import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import { isPasswordMatched } from "./auth.util";
-import jwt from "jsonwebtoken";
+import jwt, { JwtPayload } from "jsonwebtoken";
 
 const signup = async (payload: TUser) => {
   // checking using email if the user is exists for signup
@@ -30,45 +31,50 @@ const login = async (payload: TLoginUser, res: Response) => {
     if (!passwordMatch) {
       throw new Error("Password not matched!");
     }
+ 
   
-    // jwt payload creation
-    const jwtPayload = {
-      email: user.email,
-      role: user.role,
-    };
-  
-    const accessToken = jwt.sign(jwtPayload, config.jwt_access_secret as string, {
-      expiresIn: config.jwt_access_expire_in,
-    });
-  
-    const refreshToken = jwt.sign(
-      jwtPayload,
-      config.jwt_refresh_secret as string,
-      {
-        expiresIn: config.jwt_refresh_expire_in,
-      }
-    );
-  
-    // Reshape the user data to exclude sensitive fields like password
-    const userData = {
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      role: user.role,
-      address: user.address,
-    };
+    const accessToken = createToken(
+      user,
+      config.jwt_access_secret as string,
+      config.jwt_access_expire_in as string
+    )
+    
+    // const userData = {
+    //   _id: user._id,
+    //   name: user.name,
+    //   email: user.email,
+    //   phone: user.phone,
+    //   role: user.role,
+    //   address: user.address,
+    // };
   
     // Return the user data and token
-    return { token: accessToken, user: userData };
+    return { token: accessToken, user };
     // return user;
   };
- 
 
+  const refreshToken = async(token: string)=>{
+
+    // checking if the given token is valid
+  const decoded = jwt.verify(
+    token,
+    config.jwt_refresh_secret as string,
+  ) as JwtPayload;
+
+  const { email } = decoded;
+
+  // check if the user exist
+
+    const user = await User.findOne({email});
+
+    
+  }
+ 
   
 
   
 export const authServices = {
   signup,
   login,
+  refreshToken
 };
