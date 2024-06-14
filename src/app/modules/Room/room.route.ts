@@ -26,5 +26,11 @@ router.get(
     roomControllers.updateRoom,
   );
 
+  router.delete(
+    '/:id',
+    authorized(USER_ROLE.admin),
+    roomControllers.deleteRoom,
+  );
+
 
 export const roomRoutes = router;
