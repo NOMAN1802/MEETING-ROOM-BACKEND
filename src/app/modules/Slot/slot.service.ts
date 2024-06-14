@@ -59,7 +59,6 @@ const createSlotIntoDB = async (payload: TSlot) => {
 };
 
 const getAvailableSlotsFromDB = async (date: string, roomId: string) => {
-    try {
         let query = {};
 
         if (date && roomId) {
@@ -82,9 +81,7 @@ const getAvailableSlotsFromDB = async (date: string, roomId: string) => {
         }
 
         return result;
-    } catch (error: any) {
-        throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
-    }
+   
 };
 
     
