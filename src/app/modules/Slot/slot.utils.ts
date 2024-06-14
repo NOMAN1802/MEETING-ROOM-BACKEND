@@ -11,8 +11,6 @@ export const hasTimeConflict = (
     const newStartTime = new Date(`1970-01-01T${newSchedule.startTime}`);
     const newEndTime = new Date(`1970-01-01T${newSchedule.endTime}`);
 
-    // 10:30 - 12:30
-    // 11:30 - 1.30
     if (newStartTime < existingEndTime && newEndTime > existingStartTime) {
       return true;
     }
@@ -20,3 +18,14 @@ export const hasTimeConflict = (
 
   return false;
 };
+
+
+export const timeToMinutesConvert = (time: string): number => {
+    const [hours, minutes] = time.split(':').map(Number)
+    return hours * 60 + minutes
+  };
+export  const minutesToTimeConvert = (minutes: number): string => {
+    const hours = Math.floor(minutes / 60)
+    const mins = minutes % 60
+    return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`
+  };
