@@ -38,6 +38,13 @@ const slotSchema = new Schema<TSlot>(
     }
     );
 
+    // using pre middleware is room exist or deleted in the slot
+
+    
+
+
+    
+
 
 const Slot = model<TSlot>('Slot', slotSchema);
 

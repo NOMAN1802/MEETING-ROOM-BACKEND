@@ -4,19 +4,6 @@ import { authServices } from "./auth.service";
 import sendResponse from "../../utils/sendResponse";
 import config from "../../config";
 
-
-const userSignup = catchAsync(
-    async( req, res)=>{
-        const result = await authServices.signup(req.body);
-  
-        sendResponse(res, {
-          statusCode: httpStatus.OK,
-          success: true,
-          message: 'User registered successfully',
-          data: result,
-        });
-    });
-
 const userLogin = catchAsync(
     async( req, res)=>{
            const result = await authServices.login(req.body);
@@ -36,6 +23,6 @@ const userLogin = catchAsync(
     });
 
     export const authControllers = {
-        userSignup,
+        // userSignup,
         userLogin
     }

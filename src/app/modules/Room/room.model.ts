@@ -37,4 +37,17 @@ const roomSchema = new Schema<TRoom>({
     timestamps: true
 });
 
+
+// pre middleware for filter out deleted rooms
+
+roomSchema.pre('find', function(next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+
+roomSchema.pre('findOne', function(next) {
+    this.find({ isDeleted: { $ne: true } });
+    next();
+});
+
 export const Room = model<TRoom>('Room', roomSchema);

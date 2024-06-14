@@ -1,25 +1,12 @@
 import httpStatus from "http-status";
 import config from "../../config";
-import { TUser } from "../user/user.interface";
+// import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import AppError from "../../errors/AppError";
 import { isPasswordMatched } from "../../utils/matchPassword";
 import createToken from "./auth.util";
 
-
-const signup = async (payload: TUser) => {
- 
-  // checking using email if the user is exists for signup
-
-  const user = await User.findOne({ email: payload.email });
-  if (!user) {
-    throw new AppError(httpStatus.BAD_REQUEST,"User Already Exists!");
-  }
-
-  const result = await User.create(payload);
-  return result;
-};
 
 const login = async (payload: TLoginUser) => {
 
@@ -67,10 +54,8 @@ const login = async (payload: TLoginUser) => {
 
  
   
-
-  
 export const authServices = {
-  signup,
+  
   login,
  
 };
