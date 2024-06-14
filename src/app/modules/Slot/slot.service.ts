@@ -1,9 +1,10 @@
 import httpStatus from "http-status"
 import AppError from "../../errors/AppError"
 import { TSlot } from "./slot.interface"
-import { minutesToTimeConvert, timeToMinutesConvert } from "./slot.utils"
+import { minutesToTimeConvert, slotSearchableFields, timeToMinutesConvert } from "./slot.utils"
 import { Room } from "../Room/room.model"
 import Slot from "./slot.model"
+import QueryBuilder from "../../builder/QueryBuilder"
 
 
 const createSlotIntoDB = async (payload: TSlot) => {
@@ -57,10 +58,39 @@ const createSlotIntoDB = async (payload: TSlot) => {
   return result;
 };
 
+const getAvailableSlotsFromDB = async (date: string, roomId: string) => {
+    try {
+        let query = {};
+
+        if (date && roomId) {
+            query = { $and: [{ date }, { room: roomId }, { isBooked: false }] };
+        } else {
+            query = { isBooked: false };
+        }
+
+        const availableSlotQuery = new QueryBuilder(Slot.find().populate('room'), query)
+            .filter()
+            .search(slotSearchableFields)
+            .fields()
+            .sort()
+            .paginate();
+
+        const result = await availableSlotQuery.modelQuery;
+
+        if (result.length <= 0) {
+            throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+        }
+
+        return result;
+    } catch (error: any) {
+        throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, error.message);
+    }
+};
 
     
 export const slotServices = {
-    createSlotIntoDB
+    createSlotIntoDB,
+    getAvailableSlotsFromDB
    
   };
   

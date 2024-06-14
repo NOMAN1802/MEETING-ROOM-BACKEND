@@ -29,3 +29,7 @@ export  const minutesToTimeConvert = (minutes: number): string => {
     const mins = minutes % 60
     return `${String(hours).padStart(2, '0')}:${String(mins).padStart(2, '0')}`
   };
+
+  export const slotSearchableFields = [
+    'date', 
+    'room.ObjectId',];
