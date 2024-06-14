@@ -23,6 +23,6 @@ const userLogin = catchAsync(
     });
 
     export const authControllers = {
-        // userSignup,
+       
         userLogin
     }

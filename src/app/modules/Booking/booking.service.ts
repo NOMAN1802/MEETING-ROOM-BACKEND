@@ -24,9 +24,20 @@ const createBookingIntoDB = async (payload: TBooking) => {
 
   return result;
 
-}
+};
+
+const getAllBookingsFromDB = async () => {
+  const result = await Booking.find().populate('room user slots')
+  if (!result) {
+   throw new AppError(httpStatus.NOT_FOUND,'Booking not found !')
+  }
+  return result;
+};
+
+
 
 
 export const bookingServices = {
-createBookingIntoDB
+createBookingIntoDB,
+getAllBookingsFromDB
 }

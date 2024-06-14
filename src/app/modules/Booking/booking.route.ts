@@ -9,6 +9,8 @@ const router = express.Router();
 
 router.post('/',authorized(USER_ROLE.user),validateRequest(bookingValidation.createBookingValidationSchema),bookingControllers.createBooking);
 
+router.get('/',authorized(USER_ROLE.admin),bookingControllers.getAllBookings)
+
 
 
 export const bookingRoutes = router;
