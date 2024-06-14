@@ -14,5 +14,17 @@ router.get(
     roomControllers.getSingleRoom,
   );
 
+  router.get('/',authorized(USER_ROLE.admin, USER_ROLE.user), roomControllers.getAllRooms);
+
+
+  router.put(
+    '/:id',
+    authorized(USER_ROLE.admin),
+    validateRequest(
+      roomValidations.roomUpdateValidationSchema
+    ),
+    roomControllers.updateRoom,
+  );
+
 
 export const roomRoutes = router;

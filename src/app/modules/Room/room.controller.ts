@@ -30,7 +30,35 @@ const getSingleRoom = catchAsync(async (req, res) => {
     });
   });
 
+  const getAllRooms = catchAsync(async (req, res) => {
+    const result = await roomServices.getAllRoomFromDB();
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Rooms retrieved successfully',
+      data: result,
+    });
+  });  
+
+  const updateRoom = catchAsync(async (req, res) => {
+    const { id } = req.params;
+    const result = await roomServices.updateRoomIntoDB(
+      id,
+      req.body,
+    );
+  
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: 'Room updated successfully',
+      data: result,
+    });
+  });
+
     export const roomControllers = {
         createRoom,
         getSingleRoom,
+        getAllRooms,
+        updateRoom,
     }
