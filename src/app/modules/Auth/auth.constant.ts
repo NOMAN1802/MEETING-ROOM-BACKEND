@@ -1,6 +1,6 @@
-export const USER_ROLE = {
-    admin: 'admin',
-    user: 'user',
+// export const USER_ROLE = {
+//     admin: 'admin',
+//     user: 'user',
     
-  } as const;
+//   } as const;
 

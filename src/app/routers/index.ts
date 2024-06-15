@@ -4,6 +4,7 @@ import { roomRoutes } from "../modules/Room/room.route";
 import { slotRoutes } from "../modules/Slot/slot.route";
 import { userRouter } from "../modules/user/user.route";
 import { bookingRoutes } from "../modules/Booking/booking.route";
+import { specificBookingRoutes } from "../modules/Booking/booking.specific.route";
 
 
 
@@ -30,6 +31,10 @@ const moduleRoutes = [
     {
         path: '/bookings',
         route: bookingRoutes
+    },
+    {
+        path: '/my-bookings',
+        route: specificBookingRoutes
     },
 ]
 

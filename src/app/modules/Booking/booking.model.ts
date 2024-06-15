@@ -1,5 +1,10 @@
 import { Schema, model } from "mongoose";
 import { TBooking } from "./booking.interface";
+import AppError from "../../errors/AppError";
+import httpStatus from "http-status";
+import { Room } from "../Room/room.model";
+import { User } from "../user/user.model";
+import Slot from "../Slot/slot.model";
 
 
 const bookingSchema = new Schema<TBooking>(
@@ -49,7 +54,7 @@ const bookingSchema = new Schema<TBooking>(
       timestamps: true
     }
   )
-  
+
 
 
 export const Booking = model<TBooking>('Booking', bookingSchema)

@@ -13,4 +13,8 @@ router.get('/',authorized(USER_ROLE.admin),bookingControllers.getAllBookings)
 
 
 
+
+
+
+
 export const bookingRoutes = router;

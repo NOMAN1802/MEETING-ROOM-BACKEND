@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
 import { Room } from "../Room/room.model";
-import { TBooking } from "./booking.interface"
+import { IBookingResponse, TBooking } from "./booking.interface"
 import { Booking } from "./booking.model";
 import Slot from "../Slot/slot.model";
 
@@ -36,8 +36,29 @@ const getAllBookingsFromDB = async () => {
 
 
 
+const getSpecificUserBookingsFromDB = async(id:string) =>{
+  const result = await Booking.find({user: id}).populate('room slots').select('-user')
+  return result
+
+}
+
+
+const updateBookingIntoDB = async (bookingId: string, bookingData: TBooking) => {
+  const result = await Booking.findByIdAndUpdate(bookingId, bookingData, { new: true })
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND,'Booking Not found')
+  }
+  return result;
+}
+
+
 
 export const bookingServices = {
 createBookingIntoDB,
-getAllBookingsFromDB
+getAllBookingsFromDB,
+getSpecificUserBookingsFromDB,
+updateBookingIntoDB,
+
+
+
 }
