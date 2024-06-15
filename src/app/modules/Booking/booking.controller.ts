@@ -54,7 +54,7 @@ const getSpecificUserBookings = catchAsync(async (req, res) => {
       );
 
       const { email } = verifiedToken as JwtPayload;
-      console.log("email ", email);
+      // console.log("email ", email);
 
       const user = await User.findOne({ email: email });
       const userId = user?._id.toString();

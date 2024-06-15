@@ -1,4 +1,4 @@
-import { Schema, model, Document, Types } from 'mongoose';
+import { Schema, model } from 'mongoose';
 import { TSlot } from './slot.interface';
 
 
@@ -38,14 +38,7 @@ const slotSchema = new Schema<TSlot>(
     }
     );
 
-    // using pre middleware is room exist or deleted in the slot
-
     
-
-
-    
-
-
 const Slot = model<TSlot>('Slot', slotSchema);
 
 export default Slot;

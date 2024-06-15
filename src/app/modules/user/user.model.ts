@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-this-alias */
+
 import { Schema, model } from "mongoose";
 import { TUser,  } from "./user.interface";
 import bcrypt from 'bcrypt'
 import config from "../../config";
-
 
 
 const userSchema = new Schema<TUser>({
@@ -28,7 +29,7 @@ const userSchema = new Schema<TUser>({
     role:{
         type: String,
         enum:['user','admin'],
-        // required:true,
+        required:true,
 
     },
     address:{

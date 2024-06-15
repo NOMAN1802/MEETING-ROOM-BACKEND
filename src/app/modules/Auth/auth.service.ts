@@ -1,6 +1,5 @@
 import httpStatus from "http-status";
 import config from "../../config";
-// import { TUser } from "../user/user.interface";
 import { User } from "../user/user.model";
 import { TLoginUser } from "./auth.interface";
 import AppError from "../../errors/AppError";

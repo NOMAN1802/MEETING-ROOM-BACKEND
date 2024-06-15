@@ -1,7 +1,7 @@
 import httpStatus from "http-status";
 import AppError from "../../errors/AppError";
 import { Room } from "../Room/room.model";
-import { IBookingResponse, TBooking } from "./booking.interface"
+import { TBooking } from "./booking.interface"
 import { Booking } from "./booking.model";
 import Slot from "../Slot/slot.model";
 
