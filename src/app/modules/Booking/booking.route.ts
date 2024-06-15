@@ -11,8 +11,7 @@ router.post('/',authorized(USER_ROLE.user),validateRequest(bookingValidation.cre
 
 router.get('/',authorized(USER_ROLE.admin),bookingControllers.getAllBookings)
 
-
-
+router.put('/:id', authorized(USER_ROLE.admin),bookingControllers.updateBooking)
 
 
 
