@@ -22,6 +22,7 @@
 
 - user can create bookings by selecting from the available time slots for their desired meeting times.
   
+  
 **Technology Useed**
 
 ```bash
@@ -35,7 +36,6 @@
 ```bash
   Type Script
 ```
-
 
 
 ## Live link
@@ -75,8 +75,6 @@
 
 #### Install  nesessary package and dependency needed for the project
 
-#### Enjoy the project
 
-#### Install  nesessary package and dependency needed for the project
 
 #### Enjoy the project
