@@ -55,6 +55,16 @@ const bookingSchema = new Schema<TBooking>(
     }
   )
 
+// pre middleware for filter out deleted rooms
 
+bookingSchema.pre('find', function(next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
+
+bookingSchema.pre('findOne', function(next) {
+  this.find({ isDeleted: { $ne: true } });
+  next();
+});
 
 export const Booking = model<TBooking>('Booking', bookingSchema)

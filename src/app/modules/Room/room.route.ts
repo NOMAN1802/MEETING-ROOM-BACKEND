@@ -10,11 +10,11 @@ const router = express.Router();
 router.post('/',authorized(USER_ROLE.admin),validateRequest(roomValidations.roomCreateValidationSchema),roomControllers.createRoom);
 
 router.get(
-    '/:id',authorized(USER_ROLE.admin, USER_ROLE.user),
+    '/:id',
     roomControllers.getSingleRoom,
   );
 
-  router.get('/',authorized(USER_ROLE.admin, USER_ROLE.user), roomControllers.getAllRooms);
+  router.get('/', roomControllers.getAllRooms);
 
 
   router.put(

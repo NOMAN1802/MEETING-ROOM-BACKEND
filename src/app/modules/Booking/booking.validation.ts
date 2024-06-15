@@ -24,8 +24,19 @@ const createBookingValidationSchema = z.object({
     })
 })
 
+const updateBookingValidationSchema = z.object({
+
+  body: z.object({
+      date: z.string({ required_error: 'Date is required' }).optional(),
+      totalAmount: z.number().optional(),
+      isConfirmed: z.enum(['unconfirmed', 'confirmed', 'cancelled']).default('unconfirmed').optional(),
+      isDeleted: z.boolean().default(false).optional()
+  })
+})
+
 
 export const bookingValidation = {
-    createBookingValidationSchema
+    createBookingValidationSchema,
+    updateBookingValidationSchema
 };
 

@@ -51,14 +51,16 @@ const updateBookingIntoDB = async (bookingId: string, bookingData: TBooking) => 
   return result;
 }
 
-
+const deleteBookingFromDB = async (id: string) => {
+  const result = await Booking.findByIdAndUpdate(id, {isDeleted: true}, {new :true, runValidators: true});
+  return result;
+};
 
 export const bookingServices = {
 createBookingIntoDB,
 getAllBookingsFromDB,
 getSpecificUserBookingsFromDB,
 updateBookingIntoDB,
-
-
+deleteBookingFromDB
 
 }

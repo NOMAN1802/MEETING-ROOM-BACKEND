@@ -11,9 +11,9 @@ router.post('/',authorized(USER_ROLE.user),validateRequest(bookingValidation.cre
 
 router.get('/',authorized(USER_ROLE.admin),bookingControllers.getAllBookings)
 
-router.put('/:id', authorized(USER_ROLE.admin),bookingControllers.updateBooking)
+router.put('/:id', authorized(USER_ROLE.admin),validateRequest(bookingValidation.updateBookingValidationSchema),bookingControllers.updateBooking)
 
-
+router.delete('/:id', authorized(USER_ROLE.admin),bookingControllers.deleteBooking)
 
 
 export const bookingRoutes = router;

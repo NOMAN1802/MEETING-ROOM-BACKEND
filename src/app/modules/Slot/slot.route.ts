@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post('/',authorized(USER_ROLE.admin),validateRequest(slotValidations.createSlotValidationSchema),slotControllers.createSlots);
 
-router.get('/availability',authorized(USER_ROLE.admin, USER_ROLE.user),slotControllers.checkAvailableSlot)
+router.get('/availability',slotControllers.checkAvailableSlot)
 
 export const slotRoutes = router;
 
