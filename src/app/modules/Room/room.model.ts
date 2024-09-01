@@ -8,6 +8,20 @@ const roomSchema = new Schema<TRoom>({
         type: String,
         required: [true, 'Name is required']
     },
+    photo: {
+        type: String,
+        required: [true, 'Photo is required']
+    },
+    extraPhoto: {
+        type: String,
+        required: [true, 'Extra photo is required']
+    }, 
+    
+    category:{
+        type: String,
+        enum:['featured','regular'],
+        required: [true, 'category is required']
+    },
     roomNo: {
         type: Number,
         required: [true, 'Room number is required'],
