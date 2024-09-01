@@ -12,7 +12,7 @@ export const initiatePayment = async (paymentData: any) => {
       tran_id: paymentData.transactionId,
       success_url: `http://localhost:5000/api/payment/confirmation?transactionId=${paymentData.transactionId}&status=success`,
       fail_url: `http://localhost:5000/api/payment/confirmation?status=failed`,
-      cancel_url: 'http://localhost:5173/',
+      cancel_url: 'https://meeting-client.vercel.app/',
       amount: paymentData.totalAmount,
       currency: 'BDT',
       desc: 'Merchant Registration Payment',
