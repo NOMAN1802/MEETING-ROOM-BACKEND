@@ -43,7 +43,7 @@
 #### Here is the live deployed base URL
 
 ```bash
-  http://localhost:5000
+  https://meeting-room-booking-nu.vercel.app
 ```
 
 

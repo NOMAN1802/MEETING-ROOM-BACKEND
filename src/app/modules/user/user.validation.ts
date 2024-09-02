@@ -10,7 +10,7 @@ const createUserValidation = z.object({
             message: 'Password can not be more than 12 characters'
         }),
         phone:z.string({required_error: 'Phone number cis required'}),
-        role:z.enum(['user','admin']),
+        role:z.enum(['user','admin']).optional(),
         address:z.string({required_error: 'Address is required'})
 
     })

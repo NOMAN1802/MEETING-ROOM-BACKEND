@@ -7,7 +7,7 @@ export interface TUser {
     password: string,
     phone: string,
     address: string,
-    role: 'user'|'admin',
+    role?: 'user'|'admin',
 };
 
 
