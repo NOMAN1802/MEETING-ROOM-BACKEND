@@ -13,7 +13,7 @@ const getSingleRoomFromDB = async(id: string)=>{
 };
 
 const getAllRoomFromDB = async()=>{
-
+    const searchableFields = ["name", "details","category"];
     const result  = await Room.find();
     return result;
 };

@@ -5,6 +5,7 @@ import { verifyPayment } from './payment.utils';
 import { readFileSync } from 'fs';
 import { Booking } from '../Booking/booking.model';
 
+
 const confirmationService = async (transactionId: string) => {
   const verifyResponse = await verifyPayment(transactionId);
 
@@ -35,6 +36,9 @@ const confirmationService = async (transactionId: string) => {
   return template;
 };
 
+
+
 export const paymentServices = {
   confirmationService,
+  
 };

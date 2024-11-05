@@ -43,6 +43,10 @@ const roomSchema = new Schema<TRoom>({
         type: [String],
         required: [true, 'Amenities are required']
     },
+    details: {
+        type: String,
+        
+    },
     isDeleted: {
         type: Boolean,
         default: false

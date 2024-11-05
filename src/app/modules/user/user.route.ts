@@ -13,4 +13,5 @@ router.get("/users", userControllers.getAllUsers);
 router.patch("/promote/:id", authorized(USER_ROLE.admin), userControllers.promoteUser);
 router.get('/:email', authorized(USER_ROLE.user), userControllers.getUserByEmail);
 
+
 export const userRouter = router;
